@@ -13,11 +13,28 @@ from spreadsheet.baseSpreadsheet import BaseSpreadsheet
 class ArraySpreadsheet(BaseSpreadsheet):
 
     def __init__(self):
-        # TO BE IMPLEMENTED
-        pass
+        #2D array ROW(Column(Cell))
+        #Cell(row, column, val)
+        #[                          ,                         ,                         ]
+        #  [Cell(), Cell(), Cell()]   [Cell(), Cell(), Cell()] [Cell(), Cell(), Cell()]
+            #Cell has attributes row, column and value
+        
+        
+        self.array = []
+        #initalise the array to be of size 10x 10
+        self.rowsize, self.columnsize = 10,10
+        for row in range(self.rowsize):
+            temp_array = []
+            for column in range(self.columnsize):
+                temp_array.append(Cell(row,column,float(None)))
+            self.array.append(temp_array)
+        
+        
 
 
-    def buildSpreadsheet(self, lCells: [Cell]):
+
+
+    def buildSpreadsheet(self, lCells: list[Cell]):
         """
         Construct the data structure to store nodes.
         @param lCells: list of cells to be stored
@@ -130,7 +147,7 @@ class ArraySpreadsheet(BaseSpreadsheet):
 
 
 
-    def find(self, value: float) -> [(int, int)]:
+    def find(self, value: float) -> tuple[(int, int)]:
         """
         Find and return a list of cells that contain the value 'value'.
 
@@ -147,7 +164,7 @@ class ArraySpreadsheet(BaseSpreadsheet):
 
 
 
-    def entries(self) -> [Cell]:
+    def entries(self) -> list[Cell]:
         """
         @return A list of cells that have values (i.e., all non None cells).
         """
