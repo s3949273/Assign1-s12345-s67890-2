@@ -35,33 +35,26 @@ class linkedList:
 class LinkedListSpreadsheet(BaseSpreadsheet):
 
     def __init__(self):
-        self.head = linkedList()    
+        numRows = 5
+        numCols = 5
+        self.head = linkedList()
+        self.tail = self.head
         curRow = self.head
-        count = 0
-        for row in range(5):
-           
-            curRow.head = ListNode(Cell(row,0,count))
+        for row in range(numRows):
+            curRow.head = ListNode(Cell(row,0,0))
             curCell = curRow.head
-            
-            for col in range(1):
-                # count +=1
-                curCell.next = ListNode(Cell(row,col,count))
+            for col in range(1,numCols):
+                curCell.next = ListNode(Cell(row,col,0))
                 curCell.next.prev = curCell
                 curCell = curCell.next
-                
-            curCell.next = None
             curRow.tail = curCell
-            # curRow.head.prev = curCell # make this into a loop kinda thingy
-            # curCell.next = curRow.head # make this into a loop kinda thingy
+            if row != numRows-1:
+                curRow.next = linkedList()
+                curRow.next.prev = curRow
+                curRow = curRow.next
+        self.tail = curRow
 
-            self.tail = curRow
-            curRow.next = linkedList()
-            curRow.next.prev = curRow
-            curRow = curRow.next
-        self.tail.next = None
-        
-        # self.head.prev = curRow # make this into a loop kinda thingy
-        # curRow.next = self.head # make this into a loop kinda thingy
+
             
     def buildSpreadsheet(self, lCells: list[Cell]):
         """
@@ -121,8 +114,8 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         curRow.head = ListNode(Cell(rowNum,0,count))
         
         curCell = curRow.head
-        for y in range(colNum):
-            curCell.next = ListNode(Cell(rowNum,y+1,count))
+        for y in range(1,colNum):
+            curCell.next = ListNode(Cell(rowNum,y,count))
             curCell.next.prev = curCell
             
             curCell = curCell.next
@@ -140,15 +133,17 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         colNum =  self.colNum()
         rowNum = self.rowNum()
         curRow = self.head
+        count = 0
         while(curRow.next != None):
             curCell = curRow.tail
-            curCell.next = ListNode(Cell(rowNum,colNum,None))
+            curCell.next = ListNode(Cell(count,colNum,0))
             curCell.next.prev = curCell
             curRow.tail = curCell.next
             curRow = curRow.next
+            count +=1
 
         curCell = curRow.tail
-        curCell.next = ListNode(Cell(rowNum,colNum,None))
+        curCell.next = ListNode(Cell(count,colNum,0))
         curCell.next.prev = curCell
         curRow.tail = curCell.next
 
@@ -197,17 +192,23 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         if colIndex < self.colNum():
             curRow = self.head
             row_counter = 0
-            while (curRow.next != None):
+            while (curRow != None):
                 curCell = curRow.head
-                while(curCell.val.col != colIndex-1):
+                while(curCell!=None):
+                    if (curCell.val.col == colIndex-1):
+                        temp:ListNode = curCell.next
+                        curCell.next = ListNode(Cell(row_counter,colIndex,0 ))
+                        curCell.next.prev = curCell
+                        curCell.next.next = temp
+                        if temp != None:
+                            temp.prev =  curCell.next
+                        curCell.next.val.col = curCell.val.col+1
+                    elif ((curCell.next != None) and (curCell.val.col >= colIndex)):
+                        curCell.next.val.col = curCell.val.col+1
+                    
                     curCell = curCell.next
-                temp:ListNode = curCell.next
-                curCell.next = ListNode(Cell(row_counter,colIndex, None ))
-                curCell.next.prev = curCell
-                curCell.next.next = temp
-                if temp != None:
-                    temp.prev =  curCell.next
                 curRow = curRow.next
+                row_counter +=1
         else:
             return False
 
@@ -260,22 +261,19 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         # while head.next != None:
         #     counter+=1
         #     head = head.next
-        counter = self.tail.tail.val.row
-        return counter
+        return self.tail.tail.val.row + 1 
 
 
     def colNum(self)->int:
         """
         @return Number of column the spreadsheet has.
         """
-        curCell = self.head.head
-        counter = 0
-        while curCell.next !=None:
-            counter+=1
-            curCell = curCell.next
-        
-        # counter = self.tail.tail.val.col
-        return counter
+        # curCell = self.head.head
+        # counter = 0
+        # while curCell.next !=None:
+        #     counter+=1
+        #     curCell = curCell.next
+        return self.tail.tail.val.col +1
 
         # TO BE IMPLEMENTED
 

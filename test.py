@@ -17,7 +17,7 @@ def display_linked_list(ss:LinkedListSpreadsheet ):
     cur_row = ss.head
     while cur_row != None:
         head = cur_row.head
-        while head.next != None:
+        while head!= None:
             print(head.val, end = " ")
             head = head.next
         print("")
@@ -38,8 +38,8 @@ if __name__ == "__main__":
     ]
     ss = LinkedListSpreadsheet()
     display_linked_list(ss) 
-    ss.appendCol()
-    print(ss.tail.tail.val.col)
-    # ss.appendRow()
-    ss.buildSpreadsheet(test_elems)
+    ss.insertCol(2)
+    display_linked_list(ss)
+    ss.insertRow(2)
+    # ss.buildSpreadsheet(test_elems)
     display_linked_list(ss)
