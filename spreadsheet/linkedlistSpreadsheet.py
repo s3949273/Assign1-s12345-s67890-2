@@ -2,47 +2,133 @@ from spreadsheet.baseSpreadsheet import BaseSpreadsheet
 from spreadsheet.cell import Cell
 
 
-# class ListNode:
-#     '''
-#     Define a node in the linked list
-#     '''
-#
-#     def __init__(self, word_frequency: WordFrequency):
-#         self.word_frequency = word_frequency
-#         self.next = None
+class ListNode:
+    '''
+    Define a node in the linked list
+    '''
+
+    def __init__(self, val:Cell = None):
+        self.prev = None
+        self.val = val
+        self.next = None
+
 
 # ------------------------------------------------------------------------
-# This class  is required TO BE IMPLEMENTED
+# This class  is required TO BE IMPLEMENTED 
 # Linked-List-based spreadsheet implementation.
 #
 # __author__ = 'Jeffrey Chan'
 # __copyright__ = 'Copyright 2023, RMIT University'
 # ------------------------------------------------------------------------
 
+
+
+class linkedList:
+
+    def __init__(self, head:ListNode = None, tail:ListNode = None, next = None, prev= None ):
+        self.head = head
+        self.prev = prev
+        self.next = next
+        self.tail = tail
+    
+
 class LinkedListSpreadsheet(BaseSpreadsheet):
 
     def __init__(self):
-        # TO BE IMPLEMENTED
-        pass
+        self.head = linkedList()    
+        curRow = self.head
+        count = 0
+        for row in range(5):
+           
+            curRow.head = ListNode(Cell(row,0,count))
+            curCell = curRow.head
+            
+            for col in range(1):
+                # count +=1
+                curCell.next = ListNode(Cell(row,col,count))
+                curCell.next.prev = curCell
+                curCell = curCell.next
+                
+            curCell.next = None
+            curRow.tail = curCell
+            # curRow.head.prev = curCell # make this into a loop kinda thingy
+            # curCell.next = curRow.head # make this into a loop kinda thingy
 
-
-    def buildSpreadsheet(self, lCells: [Cell]):
+            self.tail = curRow
+            curRow.next = linkedList()
+            curRow.next.prev = curRow
+            curRow = curRow.next
+        self.tail.next = None
+        
+        # self.head.prev = curRow # make this into a loop kinda thingy
+        # curRow.next = self.head # make this into a loop kinda thingy
+            
+    def buildSpreadsheet(self, lCells: list[Cell]):
         """
         Construct the data structure to store nodes.
         @param lCells: list of cells to be stored
         """
+        for x in lCells:
+            lnx:ListNode = ListNode(x)
+            row_counter = lnx.val.row
+            row = self.head
+            #get to the correct row
+            while row.next != None and row_counter > 0:
+                row = row.next
+                row_counter -= 1
+            if row.next == None  and row_counter > 0:
+                while row_counter > 0:
+                    self.appendRow()
+                    row = row.next
+                    row_counter -=1
 
-        # TO BE IMPLEMENTED
-        pass
-
+            column_counter = lnx.val.col
+            column = row.head
+            #get to the correct column
+            while column.next!= None and column_counter > 0:
+                column = column.next
+                column_counter -=1
+            if column.next == None and column_counter > 0:
+                
+                while row_counter > 0:
+                    self.appendCol()
+                    column = column.next
+                    column_counter -=1
+            #               x
+            # [col1, prev, next, col4]
+            prev:ListNode = column.prev
+            next:ListNode = column.next
+            #lnx has next and prev attributes as None, set them to the correct values
+            lnx.prev = prev
+            lnx.next = next
+            #previous has its next attribute as Next, but we want lnx
+            prev.next = lnx
+            #next has its prev attribute as Prev, but we want lnx
+            if next!= None:
+                next.prev = lnx
 
     def appendRow(self):
         """
         Appends an empty row to the spreadsheet.
-        """
+        """ 
+        rowNum = self.rowNum()
+        colNum = self.colNum()
+        self.tail.next = linkedList()
+        self.tail.next.prev = self.tail
+        self.tail = self.tail.next
+        curRow = self.tail
+        count =0
+        curRow.head = ListNode(Cell(rowNum,0,count))
+        
+        curCell = curRow.head
+        for y in range(colNum):
+            curCell.next = ListNode(Cell(rowNum,y+1,count))
+            curCell.next.prev = curCell
+            
+            curCell = curCell.next
+            curRow.tail = curCell
+        self.tail = curRow
 
-        # TO BE IMPLEMENTED
-        pass
 
 
     def appendCol(self):
@@ -51,9 +137,20 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
 
         @return True if operation was successful, or False if not.
         """
-        # TO BE IMPLEMENTED
-        pass
+        colNum =  self.colNum()
+        rowNum = self.rowNum()
+        curRow = self.head
+        while(curRow.next != None):
+            curCell = curRow.tail
+            curCell.next = ListNode(Cell(rowNum,colNum,None))
+            curCell.next.prev = curCell
+            curRow.tail = curCell.next
+            curRow = curRow.next
 
+        curCell = curRow.tail
+        curCell.next = ListNode(Cell(rowNum,colNum,None))
+        curCell.next.prev = curCell
+        curRow.tail = curCell.next
 
     def insertRow(self, rowIndex: int)->bool:
         """
@@ -63,11 +160,31 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
 
         @return True if operation was successful, or False if not, e.g., rowIndex is invalid.
         """
-
-        # TO BE IMPLEMENTED
-        pass
-
-        # REPLACE WITH APPROPRIATE RETURN VALUE
+        if rowIndex > self.rowNum():
+            return False
+        elif rowIndex > 0:
+            counter = rowIndex
+            head = self.head
+            while(head.next != None and counter >0 ):
+                head = head.next
+                counter-=1
+            prev:linkedList = head.prev
+            next:linkedList = head.next
+            row:linkedList = linkedList()            
+            #set the proper links to next and previous lists
+            row.next = next
+            row.prev = prev
+            #make it so that the new row fits into the middle of the prev and next lists
+            prev.next = row
+            next.prev = row
+        elif rowIndex == 0:
+            row:linkedList = linkedList()
+            row.next = self.head
+            self.head = row
+        elif rowIndex == -1:
+            row: linkedList = linkedList()
+            row.prev = self.tail
+            self.tail = row
         return True
 
 
@@ -77,11 +194,23 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
 
         @param colIndex Index of the existing column that will be before the newly inserted row.  If inserting as first column, specify colIndex to be -1.
         """
+        if colIndex < self.colNum():
+            curRow = self.head
+            row_counter = 0
+            while (curRow.next != None):
+                curCell = curRow.head
+                while(curCell.val.col != colIndex-1):
+                    curCell = curCell.next
+                temp:ListNode = curCell.next
+                curCell.next = ListNode(Cell(row_counter,colIndex, None ))
+                curCell.next.prev = curCell
+                curCell.next.next = temp
+                if temp != None:
+                    temp.prev =  curCell.next
+                curRow = curRow.next
+        else:
+            return False
 
-        # TO BE IMPLEMENTED
-        pass
-
-        # REPLACE WITH APPROPRIATE RETURN VALUE
         return True
 
 
@@ -97,7 +226,26 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         """
 
         # TO BE IMPLEMENTED
-        pass
+        try:
+            row_counter = rowIndex
+            col_counter = colIndex
+            row = self.head
+            while row.next!= None and row_counter >0:
+                row = row.next
+                row_counter -=1
+            if row.next == None and row_counter > 0:
+                return False
+            
+            col:ListNode = row.head
+            
+            while col.next!= None and col_counter >0:
+                col = col.next
+                col_counter -=1
+            if col.next == None and col_counter > 0:
+                return False
+            col.val.val = value
+        except: 
+            return False
 
         # REPLACE WITH APPROPRIATE RETURN VALUE
         return True
@@ -107,28 +255,33 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         """
         @return Number of rows the spreadsheet has.
         """
-
-        # TO BE IMPLEMENTED
-        pass
-
-        # TO BE IMPLEMENTED
-        return 0
+        # head:linkedList = self.head
+        # counter = 0
+        # while head.next != None:
+        #     counter+=1
+        #     head = head.next
+        counter = self.tail.tail.val.row
+        return counter
 
 
     def colNum(self)->int:
         """
         @return Number of column the spreadsheet has.
         """
+        curCell = self.head.head
+        counter = 0
+        while curCell.next !=None:
+            counter+=1
+            curCell = curCell.next
+        
+        # counter = self.tail.tail.val.col
+        return counter
 
         # TO BE IMPLEMENTED
-        pass
-
-        # TO BE IMPLEMENTED
-        return 0
 
 
 
-    def find(self, value: float) -> [(int, int)]:
+    def find(self, value: float) -> list[(int, int)]:
         """
         Find and return a list of cells that contain the value 'value'.
 
@@ -136,22 +289,33 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
 
         @return List of cells (row, col) that contains the input value.
 	    """
-
-        # TO BE IMPLEMENTED
-        pass
+        ret = []
+        head = self.head
+        while head.next != None:
+            cell = head.head
+            while cell.next !=None:
+                if cell.val.val == value:
+                    ret.append((cell.val.row, cell.val.col))
+                cell.next
+            head.next
 
         # REPLACE WITH APPROPRIATE RETURN VALUE
-        return []
+        return ret
 
 
 
-    def entries(self) -> [Cell]:
+    def entries(self) -> list[Cell]:
         """
         @return A list of cells that have values (i.e., all non None cells).
         """
+        ret = []
+        head = self.head
+        while head.next != None:
+            cell = head.head
+            while cell.next !=None:
+                if cell.val.val !=None:
+                    ret.append(cell.val)
+                cell.next
+            head.next
 
-        # TO BE IMPLEMENTED
-        pass
-
-        # TO BE IMPLEMENTED
-        return []
+        return ret

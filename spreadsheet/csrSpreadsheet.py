@@ -15,19 +15,28 @@ from spreadsheet.cell import Cell
 class CSRSpreadsheet(BaseSpreadsheet):
 
     def __init__(self):
-        # TO BE IMPLEMENTED
+        self.col_array = []
+        self.val_array = []
+        self.sum_array = []
         pass
 
 
-    def buildSpreadsheet(self, lCells: [Cell]):
+    def buildSpreadsheet(self, lCells: list[Cell]):
         """
         Construct the data structure to store nodes.
         @param lCells: list of cells to be stored
         """
-
-        # TO BE IMPLEMENTED
-        pass
-
+        #simple lambda to get the cell's col value
+        get_col = lambda cell: cell.col
+        #sort the list by the col value so that it is in order of columns
+        lCells.sort(key=get_col)
+        self.col_array = [elem.col for elem in lCells]
+        temp_col_arr = self.col_array
+        for x in range(0,self.col_array):
+            if self.col_array[x] == self.col_array[x+1]:
+                pass
+        self.val_array = [elem.val for elem in lCells]
+        
 
     def appendRow(self):
         """
@@ -113,7 +122,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
 
 
 
-    def find(self, value: float) -> [(int, int)]:
+    def find(self, value: float) -> tuple[(int, int)]:
         """
         Find and return a list of cells that contain the value 'value'.
 
@@ -130,7 +139,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
 
 
 
-    def entries(self) -> [Cell]:
+    def entries(self) -> list[Cell]:
         """
         return a list of cells that have values (i.e., all non None cells).
         """

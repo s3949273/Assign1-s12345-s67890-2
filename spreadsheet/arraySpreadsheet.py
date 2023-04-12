@@ -103,9 +103,7 @@ class ArraySpreadsheet(BaseSpreadsheet):
             print("you tried to insert a Row out of the bounds")
             return False
         if rowIndex > self.rowNum():
-            print("\t\t\t\t\t###Warning###\nThere were not enough rows to insert the row where you wanted, expanding the spreadsheet...")
-            for _ in range(self.rowNum(),rowIndex):
-                self.appendRow()
+            return False
         try:
             self.array.insert(rowIndex,[Cell(rowIndex, _, 1) for _ in range(0, self.colNum())])      
         except:
@@ -126,8 +124,7 @@ class ArraySpreadsheet(BaseSpreadsheet):
         try:
             
             if colIndex > self.colNum():
-                for _ in range(self.colNum(),colIndex):
-                    self.appendCol()
+                return False
             if (colIndex == -1):
                 colIndex = self.colNum() - colIndex
             elif(colIndex < -1):
@@ -181,7 +178,7 @@ class ArraySpreadsheet(BaseSpreadsheet):
 
 
 
-    def find(self, value: float) -> tuple[(int, int)]:
+    def find(self, value: float) -> list[(int, int)]:
         """
         Find and return a list of cells that contain the value 'value'.
 
@@ -195,7 +192,7 @@ class ArraySpreadsheet(BaseSpreadsheet):
         for y in range(0, self.array.__len__()):
             for x in range(0, self.array[y].__len__()):
                 if self.array[x][y].val == value:
-                    ret.append([y+1,x+1])
+                    ret.append((y,x))
         
         return ret
 
