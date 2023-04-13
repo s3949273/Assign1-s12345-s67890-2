@@ -37,9 +37,10 @@ if __name__ == "__main__":
         Cell(8, 5, -6.7),
     ]
     ss = LinkedListSpreadsheet()
-    display_linked_list(ss) 
-    ss.insertCol(2)
-    display_linked_list(ss)
-    ss.insertRow(2)
-    # ss.buildSpreadsheet(test_elems)
-    display_linked_list(ss)
+    # display_linked_list(ss)
+    # display_linked_list(ss)
+    # ss.insertCol(2)  #works
+    # ss.insertRow(1)
+    # display_linked_list(ss)
+    ss.buildSpreadsheet(test_elems)
+    # display_linked_list(ss)

@@ -30,7 +30,23 @@ class linkedList:
         self.prev = prev
         self.next = next
         self.tail = tail
-    
+
+    def populate(self, row, amount, val):
+        self.head = ListNode(Cell(row,0,val))
+        head = self.head
+        for x in range(1, amount):
+            head.next = ListNode(Cell(row, x, val))
+            head.next.prev = head
+            head = head.next
+        self.tail = head
+    def display_linked_list(self):
+        #ss = linkedlist dimension 1
+        head = self.head
+        i = 0
+        while head.next != None:
+            print(head.val)
+            head = head.next
+        print(self.tail.val)
 
 class LinkedListSpreadsheet(BaseSpreadsheet):
 
@@ -80,25 +96,25 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
             #get to the correct column
             while column.next!= None and column_counter > 0:
                 column = column.next
+                print(column_counter)
                 column_counter -=1
             if column.next == None and column_counter > 0:
-                
                 while row_counter > 0:
                     self.appendCol()
-                    column = column.next
+                    print(column_counter, end= "ad ")
                     column_counter -=1
-            #               x
+            #               lnx
             # [col1, prev, next, col4]
-            prev:ListNode = column.prev
-            next:ListNode = column.next
-            #lnx has next and prev attributes as None, set them to the correct values
-            lnx.prev = prev
-            lnx.next = next
-            #previous has its next attribute as Next, but we want lnx
-            prev.next = lnx
-            #next has its prev attribute as Prev, but we want lnx
-            if next!= None:
-                next.prev = lnx
+            # prev:ListNode = column.prev
+            # next:ListNode = column.next
+            # #lnx has next and prev attributes as None, set them to the correct values
+            # lnx.prev = prev
+            # lnx.next = next
+            # #previous has its next attribute as Next, but we want lnx
+            # prev.next = lnx
+            # #next has its prev attribute as Prev, but we want lnx
+            # if next!= None:
+            #     next.prev = lnx
 
     def appendRow(self):
         """
@@ -155,31 +171,87 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
 
         @return True if operation was successful, or False if not, e.g., rowIndex is invalid.
         """
-        if rowIndex > self.rowNum():
+        if rowIndex < self.rowNum():
+            if rowIndex >=0:
+                if rowIndex == 0:
+                    head = self.head
+                    new_row = linkedList()
+                    new_row.populate(0, self.colNum(),10)
+                    
+                    head.prev = new_row
+                    
+                    new_row.next = head
+                    self.head = new_row
+                    print(head.prev.tail.val)
+                    print(new_row.next.tail.val)
+                elif rowIndex > 0:
+                    row_counter = rowIndex-1
+                    #head is a row
+                    head = self.head
+                    while row_counter > 0 and head.next != None:
+                        #get to the correct row
+                        head = head.next
+                        row_counter -=1
+                    if row_counter > 0 and head.next == None:
+                        #there weren't enough rows to which the user could insert the row where they wanted
+                        return False
+                    
+                    else:
+                        #we are at the correct row where we want to insert  
+                        #prev is the previous row and next is the next row, we want to insert a row in between them
+                        # next:linkedList = head.next
+                        
+                        #create the new row
+                        new_row = linkedList()
+                        #populate the new row
+                        new_row.populate(rowIndex,self.colNum(), 10)
+                        #previous and next rows
+                        prev = head
+                        next = prev.next
+                        #change the existing links to include the new row
+                        prev.next  = new_row
+                        next.prev = new_row
+                        #set the correct links for the new row   
+                        new_row.prev = prev
+                        new_row.next = next
+                #we now need to change the row values of all other cells
+                #row
+                head = self.head
+                #counter we want to go back to the rowindex+1 and start changing row values from there
+                counter = rowIndex+1
+                #go to the correct row
+                while counter > 0:
+                    head = head.next
+                    counter -=1
+                #at the correct row, now start incrementing the row values for all cells after the current row
+                while head.next !=None:
+                    head_node = head.head
+                    while head_node.next !=None:
+                        head_node.val.row +=1
+                        head_node= head_node.next    
+                    head_node.val.row +=1
+                    head = head.next
+                tail = self.tail.head
+                #the tail does not get incremented so it's own while loop is made
+                while tail.next !=None:
+                    tail.val.row +=1
+                    tail = tail.next
+                #again the tail of the tail row is not incremented so we can simply do this:
+                self.tail.tail.val.row +=1
+            elif rowIndex == -1:
+                #we want to change the tail
+                tail = self.tail
+                new_row = linkedList()
+                new_row.populate(self.rowNum(), self.colNum(),10)
+                
+                tail.next = new_row
+                new_row.prev = tail
+                self.tail = new_row
+            else:
+                return False
+        else:
             return False
-        elif rowIndex > 0:
-            counter = rowIndex
-            head = self.head
-            while(head.next != None and counter >0 ):
-                head = head.next
-                counter-=1
-            prev:linkedList = head.prev
-            next:linkedList = head.next
-            row:linkedList = linkedList()            
-            #set the proper links to next and previous lists
-            row.next = next
-            row.prev = prev
-            #make it so that the new row fits into the middle of the prev and next lists
-            prev.next = row
-            next.prev = row
-        elif rowIndex == 0:
-            row:linkedList = linkedList()
-            row.next = self.head
-            self.head = row
-        elif rowIndex == -1:
-            row: linkedList = linkedList()
-            row.prev = self.tail
-            self.tail = row
+  
         return True
 
 
