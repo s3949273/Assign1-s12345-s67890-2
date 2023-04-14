@@ -79,8 +79,6 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
             numRows -=1
 
         self.tail = head
-
-
             
     def buildSpreadsheet(self, lCells: list[Cell]):
         """
@@ -121,29 +119,22 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
             #we are now at the correct location to insert the node
             # print(col.val)
             col.val = lx.val
+    
     def appendRow(self):
         """
         Appends an empty row to the spreadsheet.
         """ 
-        rowNum = self.rowNum()
-        colNum = self.colNum()
-        self.tail.next = linkedList()
-        self.tail.next.prev = self.tail
-        self.tail = self.tail.next
-        curRow = self.tail
-        count =0
-        curRow.head = ListNode(Cell(rowNum,0,None))
-        
-        curCell = curRow.head
-        for y in range(1,colNum):
-            curCell.next = ListNode(Cell(rowNum,y,None))
-            curCell.next.prev = curCell
-            
-            curCell = curCell.next
-            curRow.tail = curCell
-        self.tail = curRow
-
-
+        try:
+            rows = self.rowNum()
+            cols = self.colNum()
+            new_tail:linkedList = linkedList()
+            new_tail.populate(rows,cols, None)
+            self.tail.next = new_tail
+            new_tail.prev = self.tail
+            self.tail = new_tail
+            return True
+        except:
+            return False
 
     def appendCol(self):
         """
@@ -151,22 +142,26 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
 
         @return True if operation was successful, or False if not.
         """
-        colNum =  self.colNum()
-        rowNum = self.rowNum()
-        curRow = self.head
-        count = 0
-        while(curRow.next != None):
+        try:
+            colNum =  self.colNum()
+            rowNum = self.rowNum()
+            curRow = self.head
+            count = 0
+            while(curRow.next != None):
+                curCell = curRow.tail
+                curCell.next = ListNode(Cell(count,colNum,None))
+                curCell.next.prev = curCell
+                curRow.tail = curCell.next
+                curRow = curRow.next
+                count +=1
             curCell = curRow.tail
             curCell.next = ListNode(Cell(count,colNum,None))
             curCell.next.prev = curCell
             curRow.tail = curCell.next
             curRow = curRow.next
-            count +=1
-        curCell = curRow.tail
-        curCell.next = ListNode(Cell(count,colNum,None))
-        curCell.next.prev = curCell
-        curRow.tail = curCell.next
-        curRow = curRow.next
+            return True
+        except:
+            return False
     
     def insertRow(self, rowIndex: int)->bool:
         """
@@ -259,7 +254,6 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
   
         return True
 
-
     def insertCol(self, colIndex: int)->bool:
         """
         Inserts an empty column into the spreadsheet.
@@ -290,7 +284,6 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
             return False
         return True
 
-
     def update(self, rowIndex: int, colIndex: int, value: float) -> bool:
         """
         Update the cell with the input/argument value.
@@ -312,21 +305,16 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
                 row_counter -=1
             if row.next == None and row_counter > 0:
                 return False
-            
             col:ListNode = row.head
-            
             while col.next!= None and col_counter >0:
                 col = col.next
                 col_counter -=1
             if col.next == None and col_counter > 0:
                 return False
             col.val.val = value
+            return True
         except: 
             return False
-
-        # REPLACE WITH APPROPRIATE RETURN VALUE
-        return True
-
 
     def rowNum(self)->int:
         """
@@ -341,7 +329,6 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
             counter +=1
         return counter
         # return self.tail.tail.val.row + 1 
-
 
     def colNum(self)->int:
         """
@@ -359,8 +346,6 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
 
         # TO BE IMPLEMENTED
 
-
-
     def find(self, value: float) -> list[(int, int)]:
         """
         Find and return a list of cells that contain the value 'value'.
@@ -376,10 +361,17 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
             while cell.next !=None:
                 if cell.val.val == value:
                     ret.append((cell.val.row, cell.val.col))
-                cell.next
-            head.next
-
+                cell = cell.next
+            head = head.next
+        #head is currently the tail
+        tail = head.head
+        while tail.next !=None:
+            if tail.val.val == value:
+                ret.append((tail.val.row,cell.val.row))
+            tail = tail.next
         # REPLACE WITH APPROPRIATE RETURN VALUE
+        if self.tail.tail.val.val == value:
+            ret.append((self.tail.tail.val.row, self.tail.tail.val.col))
         return ret
 
 
@@ -395,7 +387,13 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
             while cell.next !=None:
                 if cell.val.val !=None:
                     ret.append(cell.val)
-                cell.next
-            head.next
-
+                cell = cell.next
+            head = head.next
+        tail = head
+        while tail.head.next != None:
+            if tail.head.val.val !=None:
+                ret.append(tail.head.val)
+            tail.head = tail.head.next
+        if tail.tail.val.val !=None:
+            ret.append(tail.tail.val)
         return ret
