@@ -18,7 +18,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
         self.col_array = []
         self.val_array = []
         #lets start by adding the first and last elements of the sum array (last element being the cumulative sum of all the elements)
-        self.sum_array = [0,0]
+        self.sum_array = [0]
 
     def mergeSort(self,arr):
         # original reference: https://www.geeksforgeeks.org/merge-sort/
@@ -72,16 +72,8 @@ class CSRSpreadsheet(BaseSpreadsheet):
                 k += 1
 
     def print_all_arrays(self):
-        print("[", end="")
-        counter =0
-        for x in self.val_array:
-            if counter == 20:
-                counter = 0
-                print()
-            print(x, end = ", ")
-        print("]")
-        print()
-        print("[", end="")
+        
+        print("columns:[", end="")
         counter =0
         for x in self.col_array:
             if counter == 20:
@@ -90,7 +82,16 @@ class CSRSpreadsheet(BaseSpreadsheet):
             print(x,end=", ")
         print("]")
         print()
-        print("[", end="")
+        print("values:[", end="")
+        counter =0
+        for x in self.val_array:
+            if counter == 20:
+                counter = 0
+                print()
+            print(x, end = ", ")
+        print("]")
+        print()
+        print("sum:[", end="")
         counter =0
         for x in self.sum_array:
             if counter == 20:
@@ -107,34 +108,36 @@ class CSRSpreadsheet(BaseSpreadsheet):
         """
         get_col = lambda x:x.col
         get_row = lambda x:x.row
-        # print("unsorted list: [")
-        # for x in lCells:
-        #     print(x)
-        # print("]\n")
-        # self.mergeSort(lCells)
-        # print("sorted list [")
-        # for x in lCells:
-        #     print(x)
-        # print("]\n")
+        print("unsorted list: [")
+        for x in lCells:
+            print(x)
+        print("]\n")
+        self.mergeSort(lCells)
+        print("sorted list [")
+        for x in lCells:
+            print(x)
+        print("]\n")
 
         cur_col = lCells[0].col
         cur_sum =0
         counter = 0
         sum_array_counter =0
-        # self.col_array.append(cur_col)
         while counter < lCells.__len__():
-            if cur_col == lCells[counter].col:
-                cur_sum += lCells[counter].val
-                self.val_array.append(lCells[counter].val)
-            else:
-                self.sum_array.append(self.sum_array[sum_array_counter]+cur_sum)
-                self.col_array.append(lCells[counter-1].col)
+            cur_sum += lCells[counter].val
+            if cur_col != lCells[counter].col:
+                print(cur_sum, end=",")
+                self.sum_array.append(self.sum_array[-1]+cur_sum)
+                # self.col_array.append(lCells[counter-1].col)
                 sum_array_counter += 1
                 cur_col = lCells[counter].col
                 cur_sum = 0           
                 # print(cur_col) 
+            
+            # self.val_array.append(lCells[counter].val)
             counter +=1
-
+        if lCells[lCells.__len__()-1].col != cur_col:
+            self.col_array.append(lCells[lCells.__len__()-1].col)
+        print()
         self.print_all_arrays()
         
 
