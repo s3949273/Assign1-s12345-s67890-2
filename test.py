@@ -1,13 +1,18 @@
 from spreadsheet.cell import Cell
+from spreadsheet.arraySpreadsheet import ArraySpreadsheet
+from spreadsheet.csrSpreadsheet import CSRSpreadsheet
 from spreadsheet.linkedlistSpreadsheet import LinkedListSpreadsheet, linkedList, ListNode
 
-# def display_array(array: ArraySpreadsheet):
-#     arr =array.array 
-#     for x in arr:
-#         for y in x:
-#             print("("+str(y.row)+","+ str(y.col)+","+ str(y.val)+")", end=" ")
-#         print() #newline
-#     print("finished")
+def display_array(array: ArraySpreadsheet):
+    arr =array.array 
+    for x in arr:
+        for y in x:
+            if(y.val == None):
+                print("("+str(y.row),str(y.col)+" N)", end = " ")
+            else:
+                print(y, end = " ")
+        print() #newline
+    print("finished")
 
 
 
@@ -50,29 +55,26 @@ if __name__ == "__main__":
         Cell(3, 1, 6),
         Cell(8, 5, -6.7),
     ]
-    ss = LinkedListSpreadsheet()
+    ss = ArraySpreadsheet()
     ss.buildSpreadsheet(test_elems)
-    print(ss.appendRow())
-    print(ss.appendCol())
-    print(ss.find(6.0))
-    print(ss.find(-6.0))
-    print(ss.find(-6.7))
-    print(ss.rowNum())
-    print(ss.colNum())
-    print(ss.update(2,5,-1.0))
-    print(ss.update(10,10,1.0)) #should be true
-    print(ss.update(11,11,2.5)) #should be false
-    # print(ss.rowNum())
-    # print(ss.colNum())
-    # # print(ss.entries())
-    print_entries(ss)
-    print(ss.insertRow(1))
-    print(ss.insertCol(4))
-    print(ss.insertRow(-2))
-    print(ss.colNum())
-    print(ss.rowNum())
-    # print(ss.entries())
-    print_entries(ss)
-    print(ss.update(2,5,-2.0))
-    # print(ss.entries())
-    print_entries(ss)
+    print(ss.appendRow()) #true
+    print(ss.appendCol()) #true
+    print(ss.find(6.0)) # Printing output of find(6.0): (3,1)
+    print(ss.find(-6.0)) # Printing output of find(-6.0): 
+    print(ss.find(-6.7)) #Printing output of find(-6.7): (8,5)
+    print(ss.rowNum()) # Number of rows = 11
+    print(ss.colNum()) # Number of columns = 11
+    print(ss.update(2,5,-1.0)) # Call to update(2,5,-1.0) returned success.
+    print(ss.update(10,10,1.0)) # Call to update(10,10,1.0) returned success.
+    print(ss.update(11,11,2.5)) # Call to update(11,11,2.5) returned failure.
+    print(ss.rowNum())# Printing output of entries(): (2,5,-1.00) | (3,1,6.00) | (8,5,-6.70) | (9,9,2.00) | (10,10,1.00)
+    print(ss.colNum())# Call to insertRow(1) returned success.
+    print_entries(ss)# Call to insertCol(4) returned success.
+    print(ss.insertRow(1))# Call to insertRow(-2) returned failure.
+    print(ss.insertCol(4))# Number of rows = 12
+    print(ss.insertRow(-2))# Number of columns = 12
+    print(ss.colNum())# Number of rows = 12
+    print(ss.rowNum())# Number of columns = 12
+    print_entries(ss)#  Printing output of entries(): (3,6,-1.00) | (4,1,6.00) | (9,6,-6.70) | (10,10,2.00) | (11,11,1.00)
+    print(ss.update(2,5,-2.0))#Call to update(2,5,-2.0) returned success.
+    print_entries(ss)# Printing output of entries(): (2,5,-2.00) | (3,6,-1.00) | (4,1,6.00) | (9,6,-6.70) | (10,10,2.00) | (11,11,1.00)

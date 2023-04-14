@@ -29,10 +29,6 @@ class ArraySpreadsheet(BaseSpreadsheet):
                 temp_array.append(Cell(row,column, None))
             self.array.append(temp_array)
         
-        
-
-
-
 
     def buildSpreadsheet(self, lCells: list[Cell]):
         """
@@ -41,8 +37,8 @@ class ArraySpreadsheet(BaseSpreadsheet):
         """
 
         for element in lCells:
-            x = element.row-1
-            y = element.col-1
+            x = element.row
+            y = element.col
             if self.colNum() < y:
                 while self.colNum() <= y:
                     self.appendCol()
@@ -97,22 +93,22 @@ class ArraySpreadsheet(BaseSpreadsheet):
         """
 
         #complete
+        if rowIndex > self.rowNum():
+            return False
         if (rowIndex == -1):
             rowIndex = self.rowNum() - rowIndex -1
         elif(rowIndex < -1):
-            print("you tried to insert a Row out of the bounds")
-            return False
-        if rowIndex > self.rowNum():
             return False
         try:
-            self.array.insert(rowIndex,[Cell(rowIndex, _, 1) for _ in range(0, self.colNum())])      
+            self.array.insert(rowIndex,[Cell(rowIndex, _, None) for _ in range(0, self.colNum())])   
+            for x in range(rowIndex,self.rowNum()):
+                for cell in self.array[x]:
+                    cell.row +=1
+            return True   
         except:
             return False
         
-        for x in range(rowIndex+1,self.rowNum()):
-                for cell in self.array[x]:
-                    cell.row +=1
-        return True
+
     def insertCol(self, colIndex: int)->bool:
         """
         Inserts an empty column into the spreadsheet.
@@ -132,7 +128,7 @@ class ArraySpreadsheet(BaseSpreadsheet):
                 return False
             colSize = self.colNum() +1
             for row in range(self.rowNum()):
-                self.array[row].insert(colIndex,Cell(row, colIndex-1,1))
+                self.array[row].insert(colIndex,Cell(row, colIndex-1,None))
                 for column in range(colIndex,colSize):
                     self.array[row][column].col +=1
             return True
@@ -140,8 +136,6 @@ class ArraySpreadsheet(BaseSpreadsheet):
             return False
         # REPLACE WITH APPROPRIATE RETURN VALUE
             
-
-
     def update(self, rowIndex: int, colIndex: int, value: float) -> bool:
         """
         Update the cell with the input/argument value.
