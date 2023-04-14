@@ -17,25 +17,125 @@ class CSRSpreadsheet(BaseSpreadsheet):
     def __init__(self):
         self.col_array = []
         self.val_array = []
-        self.sum_array = []
-        pass
+        #lets start by adding the first and last elements of the sum array (last element being the cumulative sum of all the elements)
+        self.sum_array = [0,0]
 
+    def mergeSort(self,arr):
+        # original reference: https://www.geeksforgeeks.org/merge-sort/
+        # while we took the original reference from geeksforgeeks, we had to implement the part 
+        # where it would check whether the columns were the same and if the rows needed to be changed
+        if len(arr) > 1:
+
+            # Finding the mid of the array
+            mid = len(arr)//2
+
+            # Dividing the array elements
+            L = arr[:mid]
+
+            # into 2 halves
+            R = arr[mid:]
+
+            # Sorting the first half
+            self.mergeSort(L)
+
+            # Sorting the second half
+            self.mergeSort(R)
+
+            i = j = k = 0
+
+            # Copy data to temp arrays L[] and R[]
+            while i < len(L) and j < len(R):
+                if L[i].col < R[j].col:
+                    arr[k] = L[i]
+                    i += 1
+                elif L[i].col > R[j].col:
+                    arr[k] = R[j]
+                    j += 1
+                else:
+                    if L[i].row < R[j].row:
+                        arr[k] = L[i]
+                        i += 1
+                    else:
+                        arr[k] = R[j]
+                        j += 1
+                k += 1
+
+            # Checking if any element was left
+            while i < len(L):
+                arr[k] = L[i]
+                i += 1
+                k += 1
+
+            while j < len(R):
+                arr[k] = R[j]
+                j += 1
+                k += 1
+
+    def print_all_arrays(self):
+        print("[", end="")
+        counter =0
+        for x in self.val_array:
+            if counter == 20:
+                counter = 0
+                print()
+            print(x, end = ", ")
+        print("]")
+        print()
+        print("[", end="")
+        counter =0
+        for x in self.col_array:
+            if counter == 20:
+                counter = 0
+                print()
+            print(x,end=", ")
+        print("]")
+        print()
+        print("[", end="")
+        counter =0
+        for x in self.sum_array:
+            if counter == 20:
+                counter = 0
+                print()
+            print(x,end=", ")
+        print("]")
+        print()
 
     def buildSpreadsheet(self, lCells: list[Cell]):
         """
         Construct the data structure to store nodes.
         @param lCells: list of cells to be stored
         """
-        #simple lambda to get the cell's col value
-        get_col = lambda cell: cell.col
-        #sort the list by the col value so that it is in order of columns
-        lCells.sort(key=get_col)
-        self.col_array = [elem.col for elem in lCells]
-        temp_col_arr = self.col_array
-        for x in range(0,self.col_array):
-            if self.col_array[x] == self.col_array[x+1]:
-                pass
-        self.val_array = [elem.val for elem in lCells]
+        get_col = lambda x:x.col
+        get_row = lambda x:x.row
+        # print("unsorted list: [")
+        # for x in lCells:
+        #     print(x)
+        # print("]\n")
+        # self.mergeSort(lCells)
+        # print("sorted list [")
+        # for x in lCells:
+        #     print(x)
+        # print("]\n")
+
+        cur_col = lCells[0].col
+        cur_sum =0
+        counter = 0
+        sum_array_counter =0
+        # self.col_array.append(cur_col)
+        while counter < lCells.__len__():
+            if cur_col == lCells[counter].col:
+                cur_sum += lCells[counter].val
+                self.val_array.append(lCells[counter].val)
+            else:
+                self.sum_array.append(self.sum_array[sum_array_counter]+cur_sum)
+                self.col_array.append(lCells[counter-1].col)
+                sum_array_counter += 1
+                cur_col = lCells[counter].col
+                cur_sum = 0           
+                # print(cur_col) 
+            counter +=1
+
+        self.print_all_arrays()
         
 
     def appendRow(self):
