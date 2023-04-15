@@ -45,14 +45,14 @@ class CSRSpreadsheet(BaseSpreadsheet):
 
             # Copy data to temp arrays L[] and R[]
             while i < len(L) and j < len(R):
-                if L[i].col < R[j].col:
+                if L[i].row < R[j].row:
                     arr[k] = L[i]
                     i += 1
-                elif L[i].col > R[j].col:
+                elif L[i].row > R[j].row:
                     arr[k] = R[j]
                     j += 1
                 else:
-                    if L[i].row < R[j].row:
+                    if L[i].col < R[j].col:
                         arr[k] = L[i]
                         i += 1
                     else:
@@ -100,17 +100,15 @@ class CSRSpreadsheet(BaseSpreadsheet):
         #     print(x,end=", ")
         # print("]")
         # print()
-        print("col:",self.col_array)
-        print("val:",self.val_array)
-        print("sum:",self.sum_array)
+        print("col:",self.col_array, self.col_array.__len__())
+        print("val:",self.val_array, self.val_array.__len__())
+        print("sum:",self.sum_array, self.sum_array.__len__())
 
     def buildSpreadsheet(self, lCells: list[Cell]):
         """
         Construct the data structure to store nodes.
         @param lCells: list of cells to be stored
         """
-        get_col = lambda x:x.col
-        get_row = lambda x:x.row
         print("unsorted list: [")
         for x in lCells:
             print(x)
@@ -120,20 +118,23 @@ class CSRSpreadsheet(BaseSpreadsheet):
         for x in lCells:
             print(x)
         print("]\n")
-
-        cur_col = lCells[0].col
-        cur_sum =lCells[0].val
+        cur_row = lCells[0].row
+        cur_sum = lCells[0].val
         self.val_array.append(lCells[0].val)
-        for x in range(1, lCells.__len__()):
+        self.col_array.append(lCells[0].col)
+        for x in range(1,lCells.__len__()):
+            #we want to append lCells[x].col no matter what
+            self.col_array.append(lCells[x].col)
+            
             self.val_array.append(lCells[x].val)
-            if cur_col != lCells[x].col:
-                self.col_array.append(lCells[x].col)
+            if cur_row != lCells[x].row:
+                print("sum before new_row: ", cur_sum)
                 self.sum_array.append(self.sum_array[-1]+cur_sum)
-                cur_col = lCells[x].col
-                cur_sum = 0
-            cur_sum+=lCells[x].val
-        self.sum_array.append(self.sum_array[-1]+cur_sum)
-        self.sum_array.append(self.sum_array[-1])
+                cur_sum =0
+                cur_row = lCells[x].row
+            cur_sum +=lCells[x].val
+
+
         print()
         self.print_all_arrays()
         
@@ -208,7 +209,9 @@ class CSRSpreadsheet(BaseSpreadsheet):
         """
         @return Number of rows the spreadsheet has.
         """
-        # TO BE IMPLEMENTED
+        num_rows = 0
+
+
         return 0
 
 
