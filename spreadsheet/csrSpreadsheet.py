@@ -15,10 +15,10 @@ from spreadsheet.cell import Cell
 class CSRSpreadsheet(BaseSpreadsheet):
 
     def __init__(self):
-        self.col_array = []
-        self.val_array = []
+        self.col_array:list[int] = []
+        self.val_array:list[float] = []
         #lets start by adding the first and last elements of the sum array (last element being the cumulative sum of all the elements)
-        self.sum_array = [0]
+        self.sum_array:list[float] = [0]
 
     def mergeSort(self,arr):
         # original reference: https://www.geeksforgeeks.org/merge-sort/
@@ -73,33 +73,36 @@ class CSRSpreadsheet(BaseSpreadsheet):
 
     def print_all_arrays(self):
         
-        print("columns:[", end="")
-        counter =0
-        for x in self.col_array:
-            if counter == 20:
-                counter = 0
-                print()
-            print(x,end=", ")
-        print("]")
-        print()
-        print("values:[", end="")
-        counter =0
-        for x in self.val_array:
-            if counter == 20:
-                counter = 0
-                print()
-            print(x, end = ", ")
-        print("]")
-        print()
-        print("sum:[", end="")
-        counter =0
-        for x in self.sum_array:
-            if counter == 20:
-                counter = 0
-                print()
-            print(x,end=", ")
-        print("]")
-        print()
+        # print("columns:[", end="")
+        # counter =0
+        # for x in self.col_array:
+        #     if counter == 20:
+        #         counter = 0
+        #         print()
+        #     print(x,end=", ")
+        # print("]")
+        # print()
+        # print("values:[", end="")
+        # counter =0
+        # for x in self.val_array:
+        #     if counter == 20:
+        #         counter = 0
+        #         print()
+        #     print(x, end = ", ")
+        # print("]")
+        # print()
+        # print("sum:[", end="")
+        # counter =0
+        # for x in self.sum_array:
+        #     if counter == 20:
+        #         counter = 0
+        #         print()
+        #     print(x,end=", ")
+        # print("]")
+        # print()
+        print("col:",self.col_array)
+        print("val:",self.val_array)
+        print("sum:",self.sum_array)
 
     def buildSpreadsheet(self, lCells: list[Cell]):
         """
@@ -119,24 +122,18 @@ class CSRSpreadsheet(BaseSpreadsheet):
         print("]\n")
 
         cur_col = lCells[0].col
-        cur_sum =0
-        counter = 0
-        sum_array_counter =0
-        while counter < lCells.__len__():
-            cur_sum += lCells[counter].val
-            if cur_col != lCells[counter].col:
-                print(cur_sum, end=",")
+        cur_sum =lCells[0].val
+        self.val_array.append(lCells[0].val)
+        for x in range(1, lCells.__len__()):
+            self.val_array.append(lCells[x].val)
+            if cur_col != lCells[x].col:
+                self.col_array.append(lCells[x].col)
                 self.sum_array.append(self.sum_array[-1]+cur_sum)
-                # self.col_array.append(lCells[counter-1].col)
-                sum_array_counter += 1
-                cur_col = lCells[counter].col
-                cur_sum = 0           
-                # print(cur_col) 
-            
-            # self.val_array.append(lCells[counter].val)
-            counter +=1
-        if lCells[lCells.__len__()-1].col != cur_col:
-            self.col_array.append(lCells[lCells.__len__()-1].col)
+                cur_col = lCells[x].col
+                cur_sum = 0
+            cur_sum+=lCells[x].val
+        self.sum_array.append(self.sum_array[-1]+cur_sum)
+        self.sum_array.append(self.sum_array[-1])
         print()
         self.print_all_arrays()
         
@@ -219,8 +216,8 @@ class CSRSpreadsheet(BaseSpreadsheet):
         """
         @return Number of column the spreadsheet has.
         """
-        # TO BE IMPLEMENTED
-        return 0
+        
+        return self.col_array.__len__()
 
 
 
