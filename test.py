@@ -52,8 +52,8 @@ def print_entries(ss:LinkedListSpreadsheet):
 def create_random_cells(num_cells: int) -> list[Cell]:
     cells = []
     for i in range(num_cells):
-        row = random.randint(1, 100)
-        col = random.randint(1, 100)
+        row = random.randint(1, 25)
+        col = random.randint(1, 25)
         val = random.randint(1,9)
         cell = Cell(row, col, val)
         cells.append(cell)
@@ -63,7 +63,7 @@ def create_random_cells(num_cells: int) -> list[Cell]:
 
 if __name__ == "__main__":
     ss = CSRSpreadsheet()
-    ss.buildSpreadsheet(create_random_cells(2500))
+    ss.buildSpreadsheet(create_random_cells(25))
 
 
 
