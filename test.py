@@ -15,6 +15,15 @@ def display_array(array: ArraySpreadsheet):
         print() #newline
     print("finished")
 
+def create_random_cells(num_cells: int) -> list[Cell]:
+    cells = []
+    for i in range(num_cells):
+        row = random.randint(1, 25)
+        col = random.randint(1, 25 )
+        val = random.randint(1,9)
+        cell = Cell(row, col, val)
+        cells.append(cell)
+    return cells
 
 
 
@@ -49,26 +58,16 @@ def print_entries(ss:LinkedListSpreadsheet):
         print(x, end=" ")
     print()
 
-def create_random_cells(num_cells: int) -> list[Cell]:
-    cells = []
-    for i in range(num_cells):
-        row = random.randint(1, 25)
-        col = random.randint(1, 25 )
-        val = random.randint(1,9)
-        cell = Cell(row, col, val)
-        cells.append(cell)
-    return cells
 
 
 
 if __name__ == "__main__":
     ss = CSRSpreadsheet()
-    ss.buildSpreadsheet(create_random_cells(200000))
+    ss.buildSpreadsheet(create_random_cells(2000000))
+    a:chr = 'a'
     # print(ss.colNum())
     # print(ss.rowNum())
-
-
-
+    None
 
 
     # test_elems = [
