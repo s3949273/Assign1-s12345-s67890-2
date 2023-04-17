@@ -37,19 +37,20 @@ class ArraySpreadsheet(BaseSpreadsheet):
         """
 
         for element in lCells:
-            x = element.row
-            y = element.col
-            if self.colNum() < y:
-                while self.colNum() <= y:
+            row = element.row
+            col = element.col
+            if self.rowNum() < row:
+                while self.rowNum() < row:
+                    self.appendRow()
                     self.appendCol()
-            if self.rowNum() < x:
-                while self.rowNum() <= x:
+            if self.colNum() < col:
+                while self.colNum() < col:
+                    self.appendCol()
                     self.appendRow()
             try:
-                self.array[y][x] = Cell(x,y,element.val)
+                self.array[row][col] = Cell(row,col,element.val)
             except:
-                print("couldn't add: Cell("+x,y, element.val+")because something went wrong")
-
+                return False
 
     def appendRow(self)->bool:
         """
@@ -58,9 +59,10 @@ class ArraySpreadsheet(BaseSpreadsheet):
         @return True if operation was successful, or False if not.
         """
         try:
-            self.array.append([Cell(self.rowNum(), _, None) for _ in range(0, self.colNum())])
+            self.array.append([Cell(self.rowNum(), _, None) for _ in range(0, self.colNum()+1)])
             return True
         except:
+            print("something went wrong")
             return False        
 
 
@@ -73,10 +75,11 @@ class ArraySpreadsheet(BaseSpreadsheet):
         
         try:
             #columns[rows], column1[row1, row2], column2,  
-            y = self.colNum() 
-            for x in range(0, self.colNum()):
-                self.array[x].append(Cell(x,y, None))
+            col = self.colNum()+1
+            for row in range(0, self.rowNum()+1):
+                self.array[row].append(Cell(row,col, None))
         except:
+            print("something went wrong")
             return False
 
         # REPLACE WITH APPROPRIATE RETURN VALUE
@@ -158,7 +161,7 @@ class ArraySpreadsheet(BaseSpreadsheet):
         @return Number of rows the spreadsheet has.
         """
         # REPLACE WITH APPROPRIATE RETURN VALUE
-        return len(self.array)
+        return len(self.array)-1
 
 
     def colNum(self)->int:
@@ -167,7 +170,7 @@ class ArraySpreadsheet(BaseSpreadsheet):
         """
 
         # REPLACE WITH APPROPRIATE RETURN VALUE
-        return len(self.array[0])
+        return len(self.array[0])-1
 
 
 
@@ -183,14 +186,63 @@ class ArraySpreadsheet(BaseSpreadsheet):
 
         # TO BE IMPLE
         ret = []
-        for y in range(0, self.array.__len__()):
-            for x in range(0, self.array[y].__len__()):
-                if self.array[x][y].val == value:
-                    ret.append((y,x))
+        for row in range(0, self.rowNum()):
+            for col in range(0, self.colNum()):
+                if self.array[row][col].val == value:
+                    ret.append((row,col))
         
         return ret
 
+    def mergeSort(self,arr):
+        # original reference: https://www.geeksforgeeks.org/merge-sort/
+        # while we took the original reference from geeksforgeeks, we had to implement the part 
+        # where it would check whether the columns were the same and if the rows needed to be changed
+        if len(arr) > 1:
 
+            # Finding the mid of the array
+            mid = len(arr)//2
+
+            # Dividing the array elements
+            L = arr[:mid]
+
+            # into 2 halves
+            R = arr[mid:]
+
+            # Sorting the first half
+            self.mergeSort(L)
+
+            # Sorting the second half
+            self.mergeSort(R)
+
+            i = j = k = 0
+
+            # Copy data to temp arrays L[] and R[]
+            while i < len(L) and j < len(R):
+                if L[i].row < R[j].row:
+                    arr[k] = L[i]
+                    i += 1
+                elif L[i].row > R[j].row:
+                    arr[k] = R[j]
+                    j += 1
+                else:
+                    if L[i].col < R[j].col:
+                        arr[k] = L[i]
+                        i += 1
+                    else:
+                        arr[k] = R[j]
+                        j += 1
+                k += 1
+
+            # Checking if any element was left
+            while i < len(L):
+                arr[k] = L[i]
+                i += 1
+                k += 1
+
+            while j < len(R):
+                arr[k] = R[j]
+                j += 1
+                k += 1
 
     def entries(self) -> list[Cell]:
         """
@@ -201,7 +253,7 @@ class ArraySpreadsheet(BaseSpreadsheet):
         for y in range(0, self.array.__len__()):
             for x in range(0, self.array[y].__len__()):
                 if self.array[x][y].val != None:
-                    ret.append([y+1,x+1])
-
+                    ret.append(self.array[x][y])
+        self.mergeSort(ret)
         # TO BE IMPLEMENTED
         return ret
