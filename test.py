@@ -15,14 +15,23 @@ def display_array(array: ArraySpreadsheet):
         print() #newline
     print("finished")
 
-def create_random_cells(num_cells: int) -> list[Cell]:
+def create_random_cells(num_cells: int, max_row:int, max_col:int) -> list[Cell]:
+    """
+        @params
+        num_cells: the number of cells you want generated
+        max_row: the abosulte value of the maximum row you want, not index, e.g.: if you want 25 rows, max_row will be 25 (not 24 as it would be for an index)
+        max_col: the abosulte value of the maximum col you want, not index, e.g.: if you want 25 rows, max_col will be 25 (not 24 as it would be for an index)
+
+    """
     cells = []
-    for i in range(num_cells):
-        row = random.randint(1, 25)
-        col = random.randint(1, 25 )
-        val = random.randint(1,9)
+    cells.append(Cell(max_row-1,max_col-1,round(random.uniform(0.1,9.9), ndigits=2)))
+    for i in range(num_cells-1):
+        row = random.randint(0, max_row-1)
+        col = random.randint(0, max_col-1)
+        val = round(random.uniform(0.1,9.9), ndigits=2)
         cell = Cell(row, col, val)
         cells.append(cell)
+    
     return cells
 
 
@@ -62,12 +71,16 @@ def print_entries(ss:LinkedListSpreadsheet):
 
 
 if __name__ == "__main__":
-    ss = CSRSpreadsheet()
-    ss.buildSpreadsheet(create_random_cells(2000000))
-    a:chr = 'a'
-    # print(ss.colNum())
-    # print(ss.rowNum())
-    None
+    ss = ArraySpreadsheet()
+    ss.buildSpreadsheet(create_random_cells(250, 25,25))
+    # for _ in range(15):
+    #     ss.appendCol()
+
+    # for _ in range(15):
+    #     ss.appendRow()
+    print(ss.colNum())
+    print(ss.rowNum())
+    display_array(ss)
 
 
     # test_elems = [
