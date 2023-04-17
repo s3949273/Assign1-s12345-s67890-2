@@ -85,41 +85,43 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         Construct the data structure to store nodes.
         @param lCells: list of cells to be stored
         """
-        for x in lCells:
-            lx = ListNode(x)
-            row_counter = lx.val.row
+        try:
+            for x in lCells:
+                lx = ListNode(x)
+                row_counter = lx.val.row
 
-            head = self.head
-            while row_counter > 0 and head.next !=None:
-                head = head.next
-                row_counter -=1
-            if row_counter > 0 and head.next ==None:
-                append_row = row_counter
-                while append_row > 0:
-                    self.appendRow()
-                    append_row -=1
-                while row_counter >0:
+                head = self.head
+                while row_counter > 0 and head.next !=None:
                     head = head.next
                     row_counter -=1
-            #do the same thing we did with rows, to col
-            col = head.head
-            col_counter = lx.val.col
-            while col_counter > 0 and col.next !=None:
-                col = col.next
-                col_counter -=1
-            
-            if col_counter >0 and col.next == None:
-                append_col = col_counter
-                while append_col > 0:
-                    self.appendCol()
-                    append_col -=1
-                while col_counter > 0:
+                if row_counter > 0 and head.next ==None:
+                    append_row = row_counter
+                    while append_row > 0:
+                        self.appendRow()
+                        append_row -=1
+                    while row_counter >0:
+                        head = head.next
+                        row_counter -=1
+                #do the same thing we did with rows, to col
+                col = head.head
+                col_counter = lx.val.col
+                while col_counter > 0 and col.next !=None:
                     col = col.next
                     col_counter -=1
-            #we are now at the correct location to insert the node
-            # print(col.val)
-            col.val = lx.val
-    
+                
+                if col_counter >0 and col.next == None:
+                    append_col = col_counter
+                    while append_col > 0:
+                        self.appendCol()
+                        append_col -=1
+                    while col_counter > 0:
+                        col = col.next
+                        col_counter -=1
+                #we are now at the correct location to insert the node
+                # print(col.val)
+                col.val = lx.val
+        except:
+            print("something went wrong")
     def appendRow(self):
         """
         Appends an empty row to the spreadsheet.
