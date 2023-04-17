@@ -65,7 +65,6 @@ class ArraySpreadsheet(BaseSpreadsheet):
             print("something went wrong")
             return False        
 
-
     def appendCol(self)->bool:
         """
         Appends an empty column to the spreadsheet.
@@ -84,7 +83,6 @@ class ArraySpreadsheet(BaseSpreadsheet):
 
         # REPLACE WITH APPROPRIATE RETURN VALUE
         return True
-
 
     def insertRow(self, rowIndex: int)->bool:
         """
@@ -111,7 +109,6 @@ class ArraySpreadsheet(BaseSpreadsheet):
         except:
             return False
         
-
     def insertCol(self, colIndex: int)->bool:
         """
         Inserts an empty column into the spreadsheet.
@@ -155,14 +152,12 @@ class ArraySpreadsheet(BaseSpreadsheet):
         except:
             return False
 
-
     def rowNum(self)->int:
         """
         @return Number of rows the spreadsheet has.
         """
         # REPLACE WITH APPROPRIATE RETURN VALUE
         return len(self.array)-1
-
 
     def colNum(self)->int:
         """
@@ -171,9 +166,6 @@ class ArraySpreadsheet(BaseSpreadsheet):
 
         # REPLACE WITH APPROPRIATE RETURN VALUE
         return len(self.array[0])-1
-
-
-
 
     def find(self, value: float) -> list[(int, int)]:
         """
@@ -250,10 +242,10 @@ class ArraySpreadsheet(BaseSpreadsheet):
         """
 
         ret = []
-        for y in range(0, self.array.__len__()):
-            for x in range(0, self.array[y].__len__()):
-                if self.array[x][y].val != None:
-                    ret.append(self.array[x][y])
+        for row in range(0, self.rowNum()):
+            for col in range(0, self.colNum()):
+                if self.array[row][col].val != None:
+                    ret.append(self.array[row][col])
         self.mergeSort(ret)
         # TO BE IMPLEMENTED
         return ret
