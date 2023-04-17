@@ -79,19 +79,17 @@ class CSRSpreadsheet(BaseSpreadsheet):
         print("sum:",self.sum_array, self.sum_array.__len__())
         print()
     
-    def del_duplicates(self, arr:[Cell]):
-        result = arr.copy() 
-        checked = []
-        for x in range(len(arr)):
-            
-            for y in range(len(arr)):
-                if arr[x].row == arr[y].row and arr[x].col == arr[y].col and x!=y:
-                    if y not in checked and x not in checked:
-                        checked.append(y)
-                        result.__delitem__(x)
-                
-            checked.append(x)
-        return result
+    # def del_duplicates(self, arr:[Cell]):
+    #     result = arr.copy() 
+    #     checked = []
+    #     for x in range(len(arr)):    
+    #         for y in range(len(arr)):
+    #             if arr[x].row == arr[y].row and arr[x].col == arr[y].col and x!=y:
+    #                 if y not in checked and x not in checked:
+    #                     checked.append(y)
+    #                     result.__delitem__(x)        
+    #         checked.append(x)
+    #     return result
 
 
 
@@ -104,7 +102,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
         # for x in lCells:
         #     print(x)
         # print("]\n")
-        self.del_duplicates(lCells)
+        # self.del_duplicates(lCells)
         self.mergeSort(lCells)
         # print("sorted list [")
         # for x in lCells:
