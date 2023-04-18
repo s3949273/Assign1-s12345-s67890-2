@@ -118,7 +118,6 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
                         col = col.next
                         col_counter -=1
                 #we are now at the correct location to insert the node
-                # print(col.val)
                 col.val = lx.val
         except:
             print("something went wrong")
@@ -184,8 +183,6 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
                     
                     new_row.next = head
                     self.head = new_row
-                    print(head.prev.tail.val)
-                    print(new_row.next.tail.val)
                 elif rowIndex > 0:
                     row_counter = rowIndex-1
                     #head is a row
