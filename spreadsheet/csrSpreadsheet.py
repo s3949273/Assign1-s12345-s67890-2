@@ -91,18 +91,11 @@ class CSRSpreadsheet(BaseSpreadsheet):
     #         checked.append(x)
     #     return result
 
-
-
-    def buildSpreadsheet(self, lCells: [Cell]):
+    def buildSpreadsheet(self, lCells: list[Cell]):
         """
         Construct the data structure to store nodes.
         @param lCells: list of cells to be stored
         """
-        # print("unsorted list: [")
-        # for x in lCells:
-        #     print(x)
-        # print("]\n")
-        # self.del_duplicates(lCells)
         lCells = set(lCells)
         lCells = list(lCells)
         self.mergeSort(lCells)
@@ -110,34 +103,32 @@ class CSRSpreadsheet(BaseSpreadsheet):
         for x in lCells:
             print(x)
         print("]\n")
+
         cur_row = 0
-        cur_sum = lCells[0].val
-        self.val_array.append(lCells[0].val)
-        self.col_array.append(lCells[0].col)
-        if lCells[0].row > 0:
-            counter = lCells[0].row-1
+        if cur_row < lCells[0].row:
+            #the starting cell had a row number greater than 0
+            counter = lCells[0].row
+            #so while the counter is greater than 0 keep adding rows
             while counter > 0:
                 self.appendRow()
                 counter -=1
+
+        cur_row = lCells[0].row
+        self.val_array.append(lCells[0].val)
+        self.col_array.append(lCells[0].col)
+        cur_sum = lCells[0].val
         for x in range(1,lCells.__len__()):
-            #we want to append lCells[x].col no matter what
-            self.col_array.append(lCells[x].col)
             self.val_array.append(lCells[x].val)
-            if cur_row != lCells[x].row:
-
+            self.col_array.append(lCells[x].col)
+            if cur_row < lCells[x].row:
                 self.sum_array.append(self.sum_array[-1]+cur_sum)
-                cur_sum =0
-
-                if lCells[x].row-cur_row > 1:
-                    
-                    counter = lCells[x].row -  cur_row
-                    while counter > 1:
-                        self.appendRow()
-                        counter -=1
-                cur_row = lCells[x].row
+                cur_row +=1
+                while cur_row != lCells[x].row:
+                    self.appendRow()
+                    cur_row+=1
+                cur_sum = 0
             cur_sum +=lCells[x].val
         self.sum_array.append(self.sum_array[-1]+cur_sum)
-        self.columns = max(self.col_array)+1
     
     def appendRow(self):
         """
@@ -318,7 +309,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
                 ret.append((row_counter, self.col_array[x]))
         return ret
 
-    def entries(self) -> [Cell]:
+    def entries(self) -> list[Cell]:
         """
         return a list of cells that have values (i.e., all non None cells).
         """

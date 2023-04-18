@@ -1,6 +1,7 @@
 from spreadsheet.cell import Cell
 import random
 from spreadsheet.arraySpreadsheet import ArraySpreadsheet
+from spreadsheet.baseSpreadsheet import BaseSpreadsheet
 from spreadsheet.csrSpreadsheet import CSRSpreadsheet
 from spreadsheet.linkedlistSpreadsheet import LinkedListSpreadsheet, linkedList, ListNode
 
@@ -34,8 +35,6 @@ def create_random_cells(num_cells: int, max_row:int, max_col:int) -> list[Cell]:
     
     return cells
 
-
-
 def display_linked_list(ss:LinkedListSpreadsheet ):
     #ss = linkedlist dimension 1
     cur_row = ss.head
@@ -61,13 +60,11 @@ def display_linked_list(ss:LinkedListSpreadsheet ):
     
     print("rowNum:",ss.rowNum())
 
-def print_entries(ss:LinkedListSpreadsheet):
+def print_entries(ss:BaseSpreadsheet):
     a = ss.entries()
     for x in a:
         print(x, end=" ")
     print()
-
-
 
 
 if __name__ == "__main__":
@@ -77,13 +74,15 @@ if __name__ == "__main__":
         Cell(2, 5, 7),
         Cell(3, 1, 6),
         Cell(8, 5, -6.7),
+
     ]
-    test = create_random_cells(10, 10,10)
-    for x in test:
-        print(x)
-    print()
-    ss.buildSpreadsheet(test)
+    # test = create_random_cells(10, 10,10)
+    ss.buildSpreadsheet(test_elems)
     ss.print_all_arrays()
+    # print_entries(ss)
+    # test =list(set(test_elems))
+    # for x in test:
+    #     print(x)
     # print(ss.appendRow()) #true
     # print(ss.appendCol()) #true
     # print(ss.find(6.0)) # Printing output of find(6.0): (3,1)
