@@ -78,18 +78,6 @@ class CSRSpreadsheet(BaseSpreadsheet):
         print(self.val_array.__len__())
         print("sum:",self.sum_array, self.sum_array.__len__())
         print()
-    
-    # def del_duplicates(self, arr:[Cell]):
-    #     result = arr.copy() 
-    #     checked = []
-    #     for x in range(len(arr)):    
-    #         for y in range(len(arr)):
-    #             if arr[x].row == arr[y].row and arr[x].col == arr[y].col and x!=y:
-    #                 if y not in checked and x not in checked:
-    #                     checked.append(y)
-    #                     result.__delitem__(x)        
-    #         checked.append(x)
-    #     return result
 
     def buildSpreadsheet(self, lCells: list[Cell]):
         """
@@ -129,6 +117,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
                 cur_sum = 0
             cur_sum +=lCells[x].val
         self.sum_array.append(self.sum_array[-1]+cur_sum)
+        self.columns = max(self.col_array)+1
     
     def appendRow(self):
         """
@@ -236,32 +225,22 @@ class CSRSpreadsheet(BaseSpreadsheet):
         #[-,2,-]
         #[-,3,-]
         #[-,4,-]
-        if rowIndex > self.rowNum() or colIndex > self.columns:
+        if rowIndex >= self.rowNum() or colIndex >= self.colNum():
             return False
         else:
-            row_counter = 0
-            value_counter = 0
             cur_sum = 0
+            val_counter = 0
+            row_counter = 0
             prev_sum = self.sum_array[0]
-            #while loop for getting to the correct row
-            print("got here")
-            while row_counter <= rowIndex:
-                if prev_sum == self.sum_array[row_counter]:
-                    while prev_sum == self.sum_array[row_counter] and row_counter < self.rowNum():
+            while row_counter < rowIndex:
+                if self.sum_array[row_counter] == prev_sum:
+                    while self.sum_array[row_counter] ==prev_sum:
                         row_counter +=1
-                 
                     prev_sum = self.sum_array[row_counter]
-                if cur_sum == self.sum_array[row_counter]:
-                    row_counter +=1
-                    cur_sum = 0
-                if row_counter >= rowIndex:
-                    break
-                print("rc",row_counter,"cs",cur_sum, "vc",value_counter)
-                cur_sum += self.val_array[value_counter]
-                value_counter+=1
-            difference = self.val_array[value_counter] - value
-            self.val_array[value_counter]= value
-            self.sum_array[row_counter] +=difference
+                cur_sum += self.val_array[val_counter]
+                val_counter +=1
+            val_counter -=1
+            
             return True
 
     def rowNum(self)->int:
@@ -291,22 +270,26 @@ class CSRSpreadsheet(BaseSpreadsheet):
         cur_sum = 0
         row_counter = 0
         prev_sum  = self.sum_array[0]
-        for x in range(0, self.val_array.__len__()):
-            if self.sum_array[row_counter] == prev_sum:
-                row_counter +=1
-                while self.sum_array[row_counter] == prev_sum:
-                    
-                    row_counter +=1
-                prev_sum = self.sum_array[row_counter]
-            if self.sum_array[row_counter] == cur_sum:
-                cur_sum = 0
-                prev_sum = self.sum_array[row_counter]
-                row_counter +=1
-                
-            c = Cell(row_counter, self.col_array[x], self.val_array[x])
-            cur_sum += self.val_array[x]
-            if self.val_array[x] == value:
-                ret.append((row_counter, self.col_array[x]))
+        try:
+            cur_sum = 0
+            row_counter = 0
+            prev_sum  = self.sum_array[0]
+            for x in range(0, self.val_array.__len__()):
+                if self.sum_array[row_counter] == prev_sum:
+                    while self.sum_array[row_counter] == prev_sum and row_counter < self.rowNum():
+                        row_counter +=1
+                    prev_sum = self.sum_array[row_counter]
+                #     # x -=1
+                # if self.sum_array[row_counter] == cur_sum and self.sum_array[row_counter] != prev_sum:
+                #     cur_sum = 0
+                #     prev_sum = self.sum_array[row_counter]
+                #     row_counter +=1
+                cur_sum += self.val_array[x]
+                if self.val_array[x] == value:
+                    ret.append((row_counter-1,self.col_array[x]))
+                # return ret
+        except:
+            print("something went wrong")
         return ret
 
     def entries(self) -> list[Cell]:
@@ -320,7 +303,6 @@ class CSRSpreadsheet(BaseSpreadsheet):
         prev_sum  = self.sum_array[0]
         for x in range(0, self.val_array.__len__()):
             if self.sum_array[row_counter] == prev_sum:
-                # print("no cells here")
                 while self.sum_array[row_counter] == prev_sum and row_counter < self.rowNum():
                     row_counter +=1
                 prev_sum = self.sum_array[row_counter]
@@ -334,25 +316,6 @@ class CSRSpreadsheet(BaseSpreadsheet):
             ret.append(c)
         for x in ret:
             x.row -=1
-        # ret = []
-        # cur_sum = 0
-        # row_counter =0
-        # val_counter =0
-        # prev_sum = self.sum_array[0]
-        # for x in range(0, self.val_array.__len__()):
-        #     if prev_sum == self.sum_array[row_counter]:
-        #         row_counter +=1
-        #         while prev_sum == self.sum_array[row_counter]:
-        #             row_counter +=1
-        #         prev_sum = self.sum_array[row_counter]
-        #         print("cs:",cur_sum, "rc",row_counter, "ps",prev_sum)
-        #         x-=1
-        #     if prev_sum == cur_sum:
-        #         row_counter +=1
-        #         cur_sum = 0
-        #     if cur_sum != prev_sum:
-        #         cur_sum+=self.val_array[x]
-
             
 
         return ret
