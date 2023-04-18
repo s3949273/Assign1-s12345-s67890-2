@@ -103,6 +103,8 @@ class CSRSpreadsheet(BaseSpreadsheet):
         #     print(x)
         # print("]\n")
         # self.del_duplicates(lCells)
+        lCells = set(lCells)
+        lCells = list(lCells)
         self.mergeSort(lCells)
         # print("sorted list [")
         # for x in lCells:
