@@ -75,20 +75,20 @@ if __name__ == "__main__":
         Cell(3, 1, 6),
         Cell(8, 5, -6.7),
     ]
+    
     # test = create_random_cells(10, 10,10)
     ss.buildSpreadsheet(test_elems)
-    
     ss.print_all_arrays()
-    print(ss.appendRow()) #true
-    print(ss.appendCol()) #true
+    # ss.print_all_arrays()
+    ss.appendRow() #true
+    ss.appendCol() #true
     # print(ss.find(6.0)) # Printing output of find(6.0): (3,1)
     # print(ss.find(-6.0)) # Printing output of find(-6.0): 
     # print(ss.find(-6.7)) #Printing output of find(-6.7): (8,5)
     # print(ss.rowNum()) # Number of rows = 11
     # print(ss.colNum()) # Number of columns = 11
     print(ss.update(2,5,-1.0)) # Call to update(2,5,-1.0) returned success.
-    print(ss.rowNum(), ss.colNum())
-    print(ss.update(10,10,1.0)) # Call to update(10,10,1.0) returned success.
+    # print(ss.update(10,10,1.0)) # Call to update(10,10,1.0) returned success.
     ss.print_all_arrays()
     # print_entries(ss)
     # print(ss.update(11,11,2.5)) # Call to update(11,11,2.5) returned failure.

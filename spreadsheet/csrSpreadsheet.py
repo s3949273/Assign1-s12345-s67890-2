@@ -75,7 +75,6 @@ class CSRSpreadsheet(BaseSpreadsheet):
         for x in self.val_array:
             print(x, end = " ")
         print("]",self.val_array.__len__())
-        print(self.val_array.__len__())
         print("sum:",self.sum_array, self.sum_array.__len__())
         print()
 
@@ -224,53 +223,77 @@ class CSRSpreadsheet(BaseSpreadsheet):
         if rowIndex >= self.rowNum() or colIndex >= self.colNum():
             return False
         else:
-            cur_sum = 0
-            cur_row = 0
-            bool_val = False
-            difference = 0
-            for i in range(len(self.val_array)):
-                cur_sum += self.val_array[i]
-                if (bool_val):
-                    self.sum_array[rowIndex] += difference
-                    # this is if the value has already been added and we dont want to check for the rest
-                elif (self.col_array[i] == colIndex and cur_row == rowIndex):
-                    bool_val = True
-                    # this is if the col index and row index match]
-                    difference = value - self.val_array[i]
-                    self.val_array[colIndex] = value
-                    self.sum_array[rowIndex] += difference
-                elif(rowIndex == cur_row and colIndex > self.col_array[i]):
-                    bool_val = True
-                    # this is if it was a none value use colindex and row index to add
-                    difference = value
-                    self.col_array.insert(i,colIndex)
-                    self.val_array.insert(i,value)
-                    self.sum_array[cur_row] += difference
-                elif (rowIndex < cur_row):
-                    bool_val = True
-                    difference = value
-                    self.col_array.insert(i,colIndex)
-                    self.val_array.insert(i,value)
-                    self.sum_array[cur_row-1] += difference
-                if (cur_sum == self.sum_array[cur_row]):
-                    cur_row+=1
-                # [1] 1
-                # [2] 3
-                #     3
-                # [4] 4
+            temp_sum = 0
+            valIndex
+            for i,val in enumerate(self.val_array):
+                if temp_sum == self.sum_array[rowIndex-1]:
+                    temp_sum += val
+                    valIndex = i
+                    break
+
+            for i in range(rowIndex,self.val_array):
+                if i == rowIndex:
+                    while self.col_array[valIndex] < colIndex and temp_sum < self.sum_array[rowIndex]:
+                        valIndex +=1
+                        if self.col_array[valIndex] == colIndex:
+                            
+                            pass # replace
+                        
+            prev_sum = self.sum_array[1]
+            value_sum = 0
+            for i,cur_sum in enumerate(self.sum_array[1:]):
+                if (cur_sum < self.sum_array[rowIndex] and cur_sum != prev_sum):
+
+                    pass
+                else:
+                    pass
+                
+
+                
+            
             # cur_sum = 0
-            # val_counter = 0
-            # row_counter = 0
-            # prev_sum = self.sum_array[0]
-            #  # try to get to the correct row
-            # while row_counter < rowIndex:
-            #     if self.sum_array[row_counter] == prev_sum:
-            #         while self.sum_array[row_counter] ==prev_sum:
-            #             row_counter +=1
-            #         prev_sum = self.sum_array[row_counter]
-            #     cur_sum += self.val_array[val_counter]
-            #     val_counter +=1
-            # val_counter -=1
+            # cur_row = 0
+            # bool_val = False
+            # difference = 0
+            # for i in range(len(self.val_array)):
+            #     cur_sum += self.val_array[i]
+            #     currowsum = self.sum_array[cur_row]   
+            #     while True:
+            #         if (bool_val):
+            #             print("boolval, currrow:",cur_row)
+            #             self.sum_array[cur_row] += difference
+            #             # this is if the value has already been added and we dont want to check for the rest
+            #         elif (self.col_array[i] == colIndex and cur_row == rowIndex):
+            #             # print("if2")
+            #             bool_val = True
+            #             # this is if the col index and row index match]
+            #             difference = value - self.val_array[i]
+            #             self.val_array[i] = value
+                        
+            #         elif(rowIndex == cur_row and colIndex > self.col_array[i]):
+            #             # print("if3")
+            #             bool_val = True
+            #             # this is if it was a none value use colindex and row index to add
+            #             difference = value
+            #             self.col_array.insert(i,colIndex)
+            #             self.val_array.insert(i,value)
+            #             self.sum_array[cur_row] += difference
+                        
+            #         elif (rowIndex < cur_row):
+            #             # print("if4")
+            #             bool_val = True
+            #             difference = value
+            #             self.col_array.insert(i,colIndex)
+            #             self.val_array.insert(i,value)
+            #             self.sum_array[cur_row-1] += difference
+                        
+            #         cur_row +=1
+            #         if ((cur_row-1 >= self.rowNum()) or (self.sum_array[cur_row] != currowsum)):
+            #             print("currow",cur_row)
+            #             print("rownum",self.rowNum())
+            #             break
+                
+        
 
 
             
