@@ -320,16 +320,40 @@ class CSRSpreadsheet(BaseSpreadsheet):
         prev_sum  = self.sum_array[0]
         for x in range(0, self.val_array.__len__()):
             if self.sum_array[row_counter] == prev_sum:
+                # print("no cells here")
                 while self.sum_array[row_counter] == prev_sum and row_counter < self.rowNum():
                     row_counter +=1
                 prev_sum = self.sum_array[row_counter]
-            if self.sum_array[row_counter] == cur_sum:
-                cur_sum = 0
-                prev_sum = self.sum_array[row_counter]
-                row_counter +=1
+            #     # x -=1
+            # if self.sum_array[row_counter] == cur_sum and self.sum_array[row_counter] != prev_sum:
+            #     cur_sum = 0
+            #     prev_sum = self.sum_array[row_counter]
+            #     row_counter +=1
             c = Cell(row_counter, self.col_array[x], self.val_array[x])
             cur_sum += self.val_array[x]
             ret.append(c)
+        for x in ret:
+            x.row -=1
+        # ret = []
+        # cur_sum = 0
+        # row_counter =0
+        # val_counter =0
+        # prev_sum = self.sum_array[0]
+        # for x in range(0, self.val_array.__len__()):
+        #     if prev_sum == self.sum_array[row_counter]:
+        #         row_counter +=1
+        #         while prev_sum == self.sum_array[row_counter]:
+        #             row_counter +=1
+        #         prev_sum = self.sum_array[row_counter]
+        #         print("cs:",cur_sum, "rc",row_counter, "ps",prev_sum)
+        #         x-=1
+        #     if prev_sum == cur_sum:
+        #         row_counter +=1
+        #         cur_sum = 0
+        #     if cur_sum != prev_sum:
+        #         cur_sum+=self.val_array[x]
+
+            
 
         return ret
 

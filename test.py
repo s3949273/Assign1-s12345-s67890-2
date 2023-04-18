@@ -74,11 +74,12 @@ if __name__ == "__main__":
         Cell(2, 5, 7),
         Cell(3, 1, 6),
         Cell(8, 5, -6.7),
-
+        Cell(14,5,2)
     ]
     # test = create_random_cells(10, 10,10)
     ss.buildSpreadsheet(test_elems)
-    ss.print_all_arrays()
+    # ss.print_all_arrays()
+    print_entries(ss)
     # print_entries(ss)
     # test =list(set(test_elems))
     # for x in test:
