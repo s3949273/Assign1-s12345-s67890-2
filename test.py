@@ -71,16 +71,19 @@ def print_entries(ss:LinkedListSpreadsheet):
 
 
 if __name__ == "__main__":
-    ss = LinkedListSpreadsheet()
-    # test_elems = [
-    #     Cell(9, 9, 2.0),
-    #     Cell(2, 5, 7),
-    #     Cell(3, 1, 6),
-    #     Cell(8, 5, -6.7),
-    # ]
-    test = create_random_cells(500, 100, 100)
+    ss = CSRSpreadsheet()
+    test_elems = [
+        Cell(9, 9, 2.0),
+        Cell(2, 5, 7),
+        Cell(3, 1, 6),
+        Cell(8, 5, -6.7),
+    ]
+    test = create_random_cells(10, 10,10)
+    for x in test:
+        print(x)
+    print()
     ss.buildSpreadsheet(test)
-    display_linked_list(ss)
+    ss.print_all_arrays()
     # print(ss.appendRow()) #true
     # print(ss.appendCol()) #true
     # print(ss.find(6.0)) # Printing output of find(6.0): (3,1)

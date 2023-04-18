@@ -106,11 +106,11 @@ class CSRSpreadsheet(BaseSpreadsheet):
         lCells = set(lCells)
         lCells = list(lCells)
         self.mergeSort(lCells)
-        # print("sorted list [")
-        # for x in lCells:
-        #     print(x)
-        # print("]\n")
-        cur_row = lCells[0].row
+        print("sorted list [")
+        for x in lCells:
+            print(x)
+        print("]\n")
+        cur_row = 0
         cur_sum = lCells[0].val
         self.val_array.append(lCells[0].val)
         self.col_array.append(lCells[0].col)
@@ -138,13 +138,6 @@ class CSRSpreadsheet(BaseSpreadsheet):
             cur_sum +=lCells[x].val
         self.sum_array.append(self.sum_array[-1]+cur_sum)
         self.columns = max(self.col_array)+1
-
-    def build_sum_array(self ):
-        prev = self.col_array[0]
-        sum_arr = []
-        for x in self.col_array:
-            if x < prev:
-                sum_arr.append(x)
     
     def appendRow(self):
         """
@@ -331,23 +324,18 @@ class CSRSpreadsheet(BaseSpreadsheet):
         """
         #for this we just have to go through the values array as that contains only non-None Cells
         ret = []
-        val_counter =0
-        sum_counter = 0
         cur_sum = 0
         row_counter = 0
         prev_sum  = self.sum_array[0]
         for x in range(0, self.val_array.__len__()):
             if self.sum_array[row_counter] == prev_sum:
-                row_counter +=1
-                while self.sum_array[row_counter] == prev_sum:
-                    
+                while self.sum_array[row_counter] == prev_sum and row_counter < self.rowNum():
                     row_counter +=1
                 prev_sum = self.sum_array[row_counter]
             if self.sum_array[row_counter] == cur_sum:
                 cur_sum = 0
                 prev_sum = self.sum_array[row_counter]
                 row_counter +=1
-                
             c = Cell(row_counter, self.col_array[x], self.val_array[x])
             cur_sum += self.val_array[x]
             ret.append(c)
