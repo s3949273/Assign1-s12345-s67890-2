@@ -226,14 +226,38 @@ class CSRSpreadsheet(BaseSpreadsheet):
         else:
             cur_sum = 0
             cur_row = 0
+            bool_val = False
+            difference = 0
             for i in range(len(self.val_array)):
                 cur_sum += self.val_array[i]
+                if (bool_val):
+                    self.sum_array[rowIndex] += difference
+                    # this is if the value has already been added and we dont want to check for the rest
+                elif (self.col_array[i] == colIndex and cur_row == rowIndex):
+                    bool_val = True
+                    # this is if the col index and row index match]
+                    difference = value - self.val_array[i]
+                    self.val_array[colIndex] = value
+                    self.sum_array[rowIndex] += difference
+                elif(rowIndex == cur_row and colIndex > self.col_array[i]):
+                    bool_val = True
+                    # this is if it was a none value use colindex and row index to add
+                    difference = value
+                    self.col_array.insert(i,colIndex)
+                    self.val_array.insert(i,value)
+                    self.sum_array[cur_row] += difference
+                elif (rowIndex < cur_row):
+                    bool_val = True
+                    difference = value
+                    self.col_array.insert(i,colIndex)
+                    self.val_array.insert(i,value)
+                    self.sum_array[cur_row-1] += difference
                 if (cur_sum == self.sum_array[cur_row]):
                     cur_row+=1
-
-
-
-            
+                # [1] 1
+                # [2] 3
+                #     3
+                # [4] 4
             # cur_sum = 0
             # val_counter = 0
             # row_counter = 0
