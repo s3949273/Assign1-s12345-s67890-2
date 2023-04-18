@@ -87,11 +87,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
         lCells = set(lCells)
         lCells = list(lCells)
         self.mergeSort(lCells)
-        print("sorted list [")
-        for x in lCells:
-            print(x)
-        print("]\n")
-
+        
         cur_row = 0
         if cur_row < lCells[0].row:
             #the starting cell had a row number greater than 0
@@ -229,17 +225,30 @@ class CSRSpreadsheet(BaseSpreadsheet):
             return False
         else:
             cur_sum = 0
-            val_counter = 0
-            row_counter = 0
-            prev_sum = self.sum_array[0]
-            while row_counter < rowIndex:
-                if self.sum_array[row_counter] == prev_sum:
-                    while self.sum_array[row_counter] ==prev_sum:
-                        row_counter +=1
-                    prev_sum = self.sum_array[row_counter]
-                cur_sum += self.val_array[val_counter]
-                val_counter +=1
-            val_counter -=1
+            cur_row = 0
+            for i in range(len(self.val_array)):
+                cur_sum += self.val_array[i]
+                if (cur_sum == self.sum_array[cur_row]):
+                    cur_row+=1
+
+
+
+            
+            # cur_sum = 0
+            # val_counter = 0
+            # row_counter = 0
+            # prev_sum = self.sum_array[0]
+            #  # try to get to the correct row
+            # while row_counter < rowIndex:
+            #     if self.sum_array[row_counter] == prev_sum:
+            #         while self.sum_array[row_counter] ==prev_sum:
+            #             row_counter +=1
+            #         prev_sum = self.sum_array[row_counter]
+            #     cur_sum += self.val_array[val_counter]
+            #     val_counter +=1
+            # val_counter -=1
+
+
             
             return True
 
@@ -247,7 +256,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
         """
         @return Number of rows the spreadsheet has.
         """
-
+        
         return self.sum_array.__len__()-1
 
     def colNum(self)->int:
