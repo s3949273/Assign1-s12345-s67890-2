@@ -269,7 +269,6 @@ class CSRSpreadsheet(BaseSpreadsheet):
             # print("colI",colIndex, "valI", val_counter)
             if self.col_array[val_counter] == colIndex:
                 #we are updating a place where a cell did exist
-                print("got here")
                 self.val_array[val_counter] = value
                 #update the sum_array
                 for x in range(row_counter, len(self.sum_array)):
@@ -277,7 +276,6 @@ class CSRSpreadsheet(BaseSpreadsheet):
                     self.sum_array[x] = round(difference,1)
             else:
                 #we are updating a place where a cell didn't exist
-                print("got there")
                 # difference = self.val_array[val_counter]+value
                 if(self.col_array[val_counter] < colIndex):
                     #colIndex was larger than the column of previous cell
@@ -301,7 +299,6 @@ class CSRSpreadsheet(BaseSpreadsheet):
                 self.columns +=1
             return True
         except IndexError:
-            print("ind")
             return False
         except:
             return False
