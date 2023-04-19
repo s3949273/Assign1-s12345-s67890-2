@@ -81,15 +81,18 @@ if __name__ == "__main__":
     ss.print_all_arrays()
     # ss.print_all_arrays()
     ss.appendRow() #true
-    # ss.appendCol() #true
+    ss.appendCol() #true
     # print(ss.find(6.0)) # Printing output of find(6.0): (3,1)
     # print(ss.find(-6.0)) # Printing output of find(-6.0): 
     # print(ss.find(-6.7)) #Printing output of find(-6.7): (8,5)
     # print(ss.rowNum()) # Number of rows = 11
     # print(ss.colNum()) # Number of columns = 11
-    print(ss.test_update(2,5,-1.0)) # Call to update(2,5,-1.0) returned success.
-    # print(ss.update(10,10,1.0)) # Call to update(10,10,1.0) returned success.
+    
+    print(ss.update(2,5,-1.0)) # Call to update(2,5,-1.0) returned success.
     ss.print_all_arrays()
+    print(ss.update(10,10,1.0)) # Call to update(10,10,1.0) returned success.
+    ss.print_all_arrays()
+    # ss.print_all_arrays()
     # print_entries(ss)
     # print(ss.update(11,11,2.5)) # Call to update(11,11,2.5) returned failure.
     # print(ss.rowNum())# Printing output of entries(): (2,5,-1.00) | (3,1,6.00) | (8,5,-6.70) | (9,9,2.00) | (10,10,1.00)
