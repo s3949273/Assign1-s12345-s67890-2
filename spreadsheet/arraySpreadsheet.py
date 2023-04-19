@@ -96,9 +96,7 @@ class ArraySpreadsheet(BaseSpreadsheet):
         #complete
         if rowIndex > self.rowNum():
             return False
-        if (rowIndex == -1):
-            rowIndex = self.rowNum() - rowIndex -1
-        elif(rowIndex < -1):
+        elif(rowIndex < 0):
             return False
         try:
             self.array.insert(rowIndex,[Cell(rowIndex, _, None) for _ in range(0, self.colNum())])   
