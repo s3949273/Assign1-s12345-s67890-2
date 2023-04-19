@@ -247,22 +247,29 @@ class CSRSpreadsheet(BaseSpreadsheet):
         #             pass
         #         else:
         #             pass
+
         if rowIndex > self.rowNum() or colIndex > self.colNum():
                 return False
         try:   
             cur_sum = 0
             row_counter = 0
+            
             val_counter = 0
-            while row_counter < rowIndex:
+            while row_counter < rowIndex and val_counter < self.val_array.__len__():
                 if cur_sum == self.sum_array[row_counter]:
                     while cur_sum == self.sum_array[row_counter]:
                         row_counter +=1
                 cur_sum+=self.val_array[val_counter]
+                # print(cur_sum, val_counter)
                 val_counter+=1
+            
             val_counter -=1
-            print(cur_sum)
+            
+            
+            # print("colI",colIndex, "valI", val_counter)
             if self.col_array[val_counter] == colIndex:
                 #we are updating a place where a cell did exist
+                print("got here")
                 self.val_array[val_counter] = value
                 #update the sum_array
                 for x in range(row_counter, len(self.sum_array)):
@@ -270,6 +277,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
                     self.sum_array[x] = round(difference,1)
             else:
                 #we are updating a place where a cell didn't exist
+                print("got there")
                 # difference = self.val_array[val_counter]+value
                 if(self.col_array[val_counter] < colIndex):
                     #colIndex was larger than the column of previous cell
@@ -290,18 +298,13 @@ class CSRSpreadsheet(BaseSpreadsheet):
                     for x in range(row_counter+1,len(self.sum_array)):
                         difference = self.sum_array[x]+value
                         self.sum_array[x] = round(difference,1)
-                
-                # [-,1,-] va = [1,2,3]
-                # [-,2,-] ca = [1,1,1]
-                # [-,3,-] sa = [0,1,3,6]
-                #
-                # [-,1,-] va = [1,1,2,3]
-                # [1,2,-] ca = [1,0,1,3] transformation: insert 0 where it is meant to go
-                # [-,3,-] sa = [0,1,4,7] transformation: from rowIndex: +difference of before
+                self.columns +=1
             return True
+        except IndexError:
+            print("ind")
+            return False
         except:
             return False
-        
     def test_update(self, rowIndex:int, colIndex:int, value:float):
         if rowIndex > self.rowNum() or colIndex > self.colNum():
             return False
