@@ -78,7 +78,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
         print("sum:",self.sum_array)
         print()
 
-    def buildSpreadsheet(self, lCells: list[Cell]):
+    def buildSpreadsheet(self, lCells: [Cell]):
         """
         Construct the data structure to store nodes.
         @param lCells: list of cells to be stored
@@ -321,7 +321,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
         """
         return self.columns
 
-    def find(self, value: float) -> tuple[(int, int)]:  
+    def find(self, value: float) -> [(int, int)]:  
         """
         Find and return a list of cells that contain the value 'value'.
 
@@ -351,7 +351,7 @@ class CSRSpreadsheet(BaseSpreadsheet):
             pass
         return ret
 
-    def entries(self) -> list[Cell]:
+    def entries(self) -> [Cell]:
         """
         return a list of cells that have values (i.e., all non None cells).
         """

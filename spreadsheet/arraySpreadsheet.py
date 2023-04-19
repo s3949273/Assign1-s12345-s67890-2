@@ -24,7 +24,7 @@ class ArraySpreadsheet(BaseSpreadsheet):
             self.array.append(temp_array)
         
 
-    def buildSpreadsheet(self, lCells: list[Cell]):
+    def buildSpreadsheet(self, lCells: [Cell]):
         """
         Construct the data structure to store nodes.
         @param lCells: list of cells to be stored
@@ -157,7 +157,7 @@ class ArraySpreadsheet(BaseSpreadsheet):
         # REPLACE WITH APPROPRIATE RETURN VALUE
         return len(self.array[0])-1
 
-    def find(self, value: float) -> list[(int, int)]:
+    def find(self, value: float) -> [(int, int)]:
         """
         Find and return a list of cells that contain the value 'value'.
 
@@ -226,7 +226,7 @@ class ArraySpreadsheet(BaseSpreadsheet):
                 j += 1
                 k += 1
 
-    def entries(self) -> list[Cell]:
+    def entries(self) -> [Cell]:
         """
         @return A list of cells that have values (i.e., all non None cells).
         """
