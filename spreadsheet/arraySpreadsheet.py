@@ -13,13 +13,7 @@ from spreadsheet.baseSpreadsheet import BaseSpreadsheet
 class ArraySpreadsheet(BaseSpreadsheet):
 
     def __init__(self):
-        #2D array ROW(Column(Cell))
-        #Cell(row, column, val)
-        #[                          ,                         ,                         ]
-        #  [Cell(), Cell(), Cell()]   [Cell(), Cell(), Cell()] [Cell(), Cell(), Cell()]
-            #Cell has attributes row, column and value
-        
-        
+
         self.array = []
         #initalise the array to be of size 10x 10
         self.rowsize, self.columnsize = 10,10
@@ -62,7 +56,6 @@ class ArraySpreadsheet(BaseSpreadsheet):
             self.array.append([Cell(self.rowNum(), _, None) for _ in range(0, self.colNum()+1)])
             return True
         except:
-            print("something went wrong")
             return False        
 
     def appendCol(self)->bool:
@@ -78,7 +71,6 @@ class ArraySpreadsheet(BaseSpreadsheet):
             for row in range(0, self.rowNum()+1):
                 self.array[row].append(Cell(row,col, None))
         except:
-            print("something went wrong")
             return False
 
         # REPLACE WITH APPROPRIATE RETURN VALUE

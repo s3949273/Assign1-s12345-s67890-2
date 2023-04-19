@@ -57,18 +57,6 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         self.head.populate(0, numCols, None)
         self.tail = self.head
         head = self.head
-        # for row in range(numRows):
-        #     curRow.head = ListNode(Cell(row,0,0))
-        #     curCell = curRow.head
-        #     for col in range(1,numCols):
-        #         curCell.next = ListNode(Cell(row,col,0))
-        #         curCell.next.prev = curCell
-        #         curCell = curCell.next
-        #     curRow.tail = curCell
-        #     if row != numRows-1:
-        #         curRow.next = linkedList()
-        #         curRow.next.prev = curRow
-        #         curRow = curRow.next
         row_counter = 1
         while numRows > 0:
             new_row = linkedList()
@@ -120,7 +108,7 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
                 #we are now at the correct location to insert the node
                 col.val = lx.val
         except:
-            print("something went wrong")
+            pass
     def appendRow(self):
         """
         Appends an empty row to the spreadsheet.
@@ -198,8 +186,6 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
                     else:
                         #we are at the correct row where we want to insert  
                         #prev is the previous row and next is the next row, we want to insert a row in between them
-                        # next:linkedList = head.next
-                        
                         #create the new row
                         new_row = linkedList()
                         #populate the new row
@@ -327,7 +313,6 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         if head.head.val != None:
             counter +=1
         return counter
-        # return self.tail.tail.val.row + 1 
 
     def colNum(self)->int:
         """
@@ -341,7 +326,6 @@ class LinkedListSpreadsheet(BaseSpreadsheet):
         if curCell.val != None:
             counter +=1
         return counter
-        # return self.tail.tail.val.col +1
 
         # TO BE IMPLEMENTED
 
